@@ -113,13 +113,22 @@
         const contentInput = document.getElementById('post-content');
         const toastSuccess = new bootstrap.Toast(document.getElementById('toast-success'));
         const toastError = new bootstrap.Toast(document.getElementById('toast-error'));
+        const toastChannelError = new bootstrap.Toast(document.createElement('div'));
+        toastChannelError._element.className = 'toast align-items-center text-bg-warning border-0';
+        toastChannelError._element.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">⚠️ 投稿先が選択されていません！</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        document.querySelector('.toast-container').appendChild(toastChannelError._element);
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const selectedChannel = document.querySelector('input[name="channel"]:checked');
             if (!selectedChannel) {
-                toastError.show();
+                toastChannelError.show();
                 console.error('投稿先が選択されていません！');
                 return;
             }
