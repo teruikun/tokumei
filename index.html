@@ -59,7 +59,7 @@
             <div class="mb-3">
                 <label class="form-label">投稿先チャンネルを選択:</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" id="channel-a" name="channel" value="A" checked>
+                    <input class="form-check-input" type="radio" id="channel-a" name="channel" value="A">
                     <label class="form-check-label" for="channel-a">青</label>
                 </div>
                 <div class="form-check">
@@ -117,8 +117,13 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const selectedChannel = document.querySelector('input[name="channel"]:checked').value;
-            const webhookUrl = WEBHOOK_URLS[selectedChannel];
+            const selectedChannel = document.querySelector('input[name="channel"]:checked');
+            if (!selectedChannel) {
+                toastError.show();
+                console.error('投稿先が選択されていません！');
+                return;
+            }
+            const webhookUrl = WEBHOOK_URLS[selectedChannel.value];
             let content = contentInput.value.trim();
 
             content = content.replace(/twitter\.com/gi, 'fxtwitter.com');
